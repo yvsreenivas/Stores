@@ -12,16 +12,17 @@ class StockCreateForm(forms.ModelForm):
     if not category:
       raise forms.ValidationError('This field is required')
 
-    stocks = Stock.objects.all()
-    for instance in stocks:
-      if instance.category == category:
-        raise forms.ValidationError(category + " exists")
-    return category
+
 
   def clean_item_name(self):
     item_name = self.cleaned_data.get('item_name')
     if not item_name:
       raise forms.ValidationError('This field is required')
+
+    stocks = Stock.objects.all()
+    for instance in stocks:
+      if instance.item_name == item_name:
+        raise forms.ValidationError(item_name + " exists")
     return item_name
 
 
