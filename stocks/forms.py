@@ -12,8 +12,6 @@ class StockCreateForm(forms.ModelForm):
     if not category:
       raise forms.ValidationError('This field is required')
 
-
-
   def clean_item_name(self):
     item_name = self.cleaned_data.get('item_name')
     if not item_name:
