@@ -11,7 +11,7 @@ def home(request):
 	return render(request, "home.html",context)
 
 def list_items(request):
-	title = 'List of Items'
+	title = 'List of Assets and Consumables'
 	form = StockSearchForm(request.POST or None)
 	queryset = Stock.objects.all()
 	context = {
@@ -37,7 +37,7 @@ def add_items(request):
         return redirect('/list_items')
     context = {
 		"form": form,
-		"header": "Add Item",
+		"header": "Add Asset/Item",
 	}
     return render(request, "add_items.html", context)
 

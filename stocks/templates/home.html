@@ -1,18 +1,16 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 <!--Block content goes below-->
 
 
   {% block content %}
   {% include 'navbar.html' %}
   <main role="main" class="container">
-    <div class="jumbotron">
-      <h1>{{header}}</h1>
-
+    <div class="jumbotron clearfix" >
+      <!-- <h1>{{header}}</h1> -->
+      <img src="{% static 'img/ais-stores2.png'  %}" alt="Landing Page">
     </div>
   </main>
 
 
   {% endblock %}
-
- 
