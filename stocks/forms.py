@@ -1,6 +1,6 @@
 from django import forms
 from .models import Stock
-
+import pdb
 
 class StockCreateForm(forms.ModelForm):
   class Meta:
