@@ -1,6 +1,6 @@
 from django import forms
 from .models import Stock
-
+import pdb
 
 class StockCreateForm(forms.ModelForm):
   class Meta:
@@ -11,6 +11,7 @@ class StockCreateForm(forms.ModelForm):
     category = self.cleaned_data.get('category')
     if not category:
       raise forms.ValidationError('This field is required')
+    return category
 
   def clean_item_name(self):
     item_name = self.cleaned_data.get('item_name')
