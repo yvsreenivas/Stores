@@ -20,7 +20,7 @@ def list_items(request):
 		"form": form,
 	}
 	if request.method == 'POST':
-		queryset = Stock.objects.filter(category__icontains=form['category'].value(),
+		queryset = Stock.objects.filter(
 										item_name__icontains=form['item_name'].value()
 										)
 		context = {

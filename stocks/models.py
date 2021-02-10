@@ -5,6 +5,7 @@ class Category(models.Model):
 	def __str__(self):
 		return self.name
 
+
 class Stock(models.Model):
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
 	item_name = models.CharField(max_length=50, blank=True, null=True)
