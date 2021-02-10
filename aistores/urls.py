@@ -26,6 +26,7 @@ urlpatterns = [
     path('issue_items/<str:pk>/', views.issue_items, name="issue_items"),
     path('receive_items/<str:pk>/', views.receive_items, name="receive_items"),
     path('accounts/', include('registration.backends.default.urls')),
+    path('register/', views.register, name='register'),
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
 ]
