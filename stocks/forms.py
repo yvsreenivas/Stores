@@ -11,6 +11,7 @@ class StockCreateForm(forms.ModelForm):
     category = self.cleaned_data.get('category')
     if not category:
       raise forms.ValidationError('This field is required')
+    return category
 
   def clean_item_name(self):
     item_name = self.cleaned_data.get('item_name')
@@ -27,7 +28,7 @@ class StockCreateForm(forms.ModelForm):
 class StockSearchForm(forms.ModelForm):
   class Meta:
     model = Stock
-    fields = ['category', 'item_name']
+    fields = ['item_name']
 
 
 class StockUpdateForm(forms.ModelForm):
