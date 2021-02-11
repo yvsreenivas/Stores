@@ -47,7 +47,7 @@
                     <td>{{instance.category}}</td>
                     <td><a href="{% url 'update_items' instance.id %}">{{instance.item_name}}</a></td>
                     <td><a href="{% url 'stock_detail' instance.id %}">{{instance.quantity}}</a></td>
-                    <td>{{aztinstance.timestamp}}</td>
+                    <td>{{instance.timestamp}}</td>
                     <td>{{instance.last_updated}}</td>
                     <td><a href="{% url 'delete_items' instance.id %}">
                             <!-- <i class="fa fa-trash-o" aria-hidden="true"></i> -->
