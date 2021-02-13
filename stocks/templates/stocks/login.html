@@ -1,6 +1,7 @@
-{% extends 'stocks/base.html' %}
+{% extends 'main/base_0.html' %}
 {% load static %}
-{% block body_block %}
+{% load crispy_forms_tags %}
+{% block content %}
     <h1>Login here :</h1>
     <form method="post" action="{% url 'stocks:user_login' %}">
         {% csrf_token %}
@@ -11,4 +12,4 @@
         <input type="password" name="password" placeholder="Password">
         <input type="submit" name="" value="Login">
     </form>
-{% endblock %}
+{% endblock content %}

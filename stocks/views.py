@@ -93,7 +93,7 @@ def add_items(request):
     if form.is_valid():
         form.save()
         messages.success(request, 'Successfully Saved')
-        return reverse('list_items')
+        return redirect('list_items')
     context = {
 		"form": form,
 		"header": "Add Asset/Item",
