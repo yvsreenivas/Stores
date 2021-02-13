@@ -2,24 +2,68 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Stock
 from .forms import *
-from django.contrib.auth.forms import UserCreationForm
+from stocks.forms import UserForm,UserProfileInfoForm
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
+
+def register(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileInfoForm(data=request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            if 'profile_pic' in request.FILES:
+                print('found it')
+                profile.profile_pic = request.FILES['profile_pic']
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors,profile_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileInfoForm()
+    return render(request,'stocks/registration.html',
+                          {'user_form':user_form,
+                           'profile_form':profile_form,
+                           'registered':registered})
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect(reverse('home'))
+            else:
+                return HttpResponse("Your account was inactive.")
+        else:
+            print("Someone tried to login and failed.")
+            print("They used username: {} and password: {}".format(username,password))
+            return HttpResponse("Invalid login details given")
+    else:
+        return render(request, 'stocks/login.html', {})
 
 def home(request):
 	title = 'Home'
 	context = {
 	"header": title,
 	}
-	return render(request, "home.html",context)
+	return render(request, "stocks/home.html",context)
 
-def register(request):
-	form = UserCreationForm
-	title = 'Register'
-	context = {
-	"form": form,
-	}
-	return render(request, "register.html",context)
 
 @login_required
 def list_items(request):
@@ -40,7 +84,7 @@ def list_items(request):
 		"header": title,
 		"queryset": queryset,
 	}
-	return render(request, "list_items.html", context)
+	return render(request, "stocks/list_items.html", context)
 
 @login_required
 def add_items(request):
@@ -49,12 +93,12 @@ def add_items(request):
     if form.is_valid():
         form.save()
         messages.success(request, 'Successfully Saved')
-        return redirect('/list_items')
+        return reverse('list_items')
     context = {
 		"form": form,
 		"header": "Add Asset/Item",
 	}
-    return render(request, "add_items.html", context)
+    return render(request, "stocks/add_items.html", context)
 
 @login_required
 def update_items(request, pk):
@@ -65,12 +109,12 @@ def update_items(request, pk):
 		if form.is_valid():
 			form.save()
 			messages.success(request, 'Successfully Saved')
-			return redirect('/list_items')
+			return reverse('list_items')
 
 	context = {
 		'form':form
 	}
-	return render(request, 'add_items.html', context)
+	return render(request, 'stocks/add_items.html', context)
 
 @login_required
 def delete_items(request, pk):
@@ -78,8 +122,8 @@ def delete_items(request, pk):
 	if request.method == 'POST':
 		queryset.delete()
 		messages.success(request, 'Successfully Deleted')
-		return redirect('/list_items')
-	return render(request, 'delete_items.html')
+		return reverse('list_items')
+	return render(request, 'stocks/delete_items.html')
 
 @login_required
 def stock_detail(request, pk):
@@ -87,7 +131,7 @@ def stock_detail(request, pk):
 	context = {
 		"queryset": queryset,
 	}
-	return render(request, "stock_detail.html", context)
+	return render(request, "stocks/stock_detail.html", context)
 
 @login_required
 def issue_items(request, pk):
@@ -109,7 +153,7 @@ def issue_items(request, pk):
 		"form": form,
 	    "username": 'Issue By: ' + str(request.user),
 	}
-	return render(request, "add_items.html", context)
+	return render(request, "stocks/add_items.html", context)
 
 @login_required
 def receive_items(request, pk):
@@ -129,4 +173,4 @@ def receive_items(request, pk):
 			"form": form,
 			"username": 'Receive By: ' + str(request.user),
 		}
-	return render(request, "add_items.html", context)
+	return render(request, "stocks/add_items.html", context)

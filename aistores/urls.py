@@ -16,8 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from stocks import views
+from django.conf.urls import url,include
+
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    url(r'^stocks/',include('stocks.urls')),
+    url(r'^logout/$', views.user_logout, name='logout'),
     path('list_items/', views.list_items, name='list_items'),
     path('add_items/', views.add_items, name='add_items'),
     path('update_items/<str:pk>/', views.update_items, name="update_items"),
@@ -25,8 +30,7 @@ urlpatterns = [
     path('stock_detail/<str:pk>/', views.stock_detail, name="stock_detail"),
     path('issue_items/<str:pk>/', views.issue_items, name="issue_items"),
     path('receive_items/<str:pk>/', views.receive_items, name="receive_items"),
-    path('accounts/', include('registration.backends.default.urls')),
-    path('register/', views.register, name='register'),
+    # path('accounts/', include('registration.backends.default.urls')),
+    # path('register/', views.register, name='register'),
     path('', views.home, name='home'),
-    path('admin/', admin.site.urls),
 ]

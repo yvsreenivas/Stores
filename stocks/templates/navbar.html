@@ -19,9 +19,9 @@
       </ul>
       <ul class="navbar-nav">
        {% if request.user.is_authenticated %}
-         <li><a href="/accounts/logout"><button class="btn btn-danger">{{ user }} | Logout</button></a></li>
+         <li><a href="{% url 'logout' %}"><button class="btn btn-danger">{{ user }} | Logout</button></a></li>
        {% else %}
-         <li><a href="/accounts/login">Login</a></li>
+         <li><a href="{% url 'stocks:login' %}">Login</a></li>
        {% endif %}
    </ul>
     </div>
