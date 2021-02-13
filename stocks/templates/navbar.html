@@ -21,7 +21,7 @@
        {% if request.user.is_authenticated %}
          <li><a href="{% url 'logout' %}"><button class="btn btn-danger">{{ user }} | Logout</button></a></li>
        {% else %}
-         <li><a href="{% url 'stocks:login' %}">Login</a></li>
+         <li><a href="{% url 'stocks:user_login' %}">Login</a></li>
        {% endif %}
    </ul>
     </div>
